@@ -1,13 +1,23 @@
-import { NoteData } from "../types/types";
+import { NoteData, Tag } from "../types/types";
 import NoteForm from "./NoteForm";
 
-export default function NewNote() {
+type NewNoteProps = {
+  onSubmit: (data: NoteData) => void;
+  onAddTag: (tag: Tag) => void;
+  availableTags: Tag[];
+};
+
+export default function NewNote({
+  onSubmit,
+  onAddTag,
+  availableTags,
+}: NewNoteProps) {
   return (
     <div>
       <NoteForm
-        onSubmit={function (data: NoteData): void {
-          throw new Error("Function not implemented.");
-        }}
+        onSubmit={onSubmit}
+        onAddTag={onAddTag}
+        availableTags={availableTags}
       />
     </div>
   );

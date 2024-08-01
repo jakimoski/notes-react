@@ -15,4 +15,16 @@ export type Note = {
 
 export type NoteFormProps = {
   onSubmit: (data: NoteData) => void;
+  onAddTag: (tag: Tag) => void;
+  availableTags: Tag[];
 };
+
+export type RawNoteData = {
+  title: string;
+  body: string;
+  tagIds: string[];
+};
+
+export type RawNote = {
+  id: string;
+} & RawNoteData;

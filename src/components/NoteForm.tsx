@@ -9,14 +9,20 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { NoteFormProps, Tag } from "../types/types";
+import { v4 as uuidV4 } from "uuid";
 
-export default function NoteForm({ onSubmit }: NoteFormProps) {
+export default function NoteForm({
+  onSubmit,
+  onAddTag,
+  availableTags,
+}: NoteFormProps) {
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [tags, setTags] = useState<Tag[]>([]);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -26,6 +32,8 @@ export default function NoteForm({ onSubmit }: NoteFormProps) {
       body: textRef.current!.value,
       tags,
     });
+
+    navigate("..");
   };
 
   return (
@@ -42,7 +50,15 @@ export default function NoteForm({ onSubmit }: NoteFormProps) {
             <FormGroup controlId="tags">
               <FormLabel>Tags</FormLabel>
               <CreatableSelect
+                onCreateOption={(label) => {
+                  const newTag = { id: uuidV4(), label };
+                  onAddTag(newTag);
+                  setTags((prev) => [...prev, newTag]);
+                }}
                 value={tags.map((tag) => {
+                  return { label: tag.label, value: tag.id };
+                })}
+                options={availableTags.map((tag) => {
                   return { label: tag.label, value: tag.id };
                 })}
                 onChange={(newTags) => {
