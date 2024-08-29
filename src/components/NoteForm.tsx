@@ -18,10 +18,13 @@ export default function NoteForm({
   onSubmit,
   onAddTag,
   availableTags,
+  title = "",
+  body = "",
+  tags = [],
 }: NoteFormProps) {
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [selectedTags, setTags] = useState<Tag[]>(tags);
   const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent) => {
@@ -43,7 +46,7 @@ export default function NoteForm({
           <Col>
             <FormGroup controlId="title">
               <FormLabel>Title</FormLabel>
-              <FormControl ref={titleRef} required />
+              <FormControl ref={titleRef} required defaultValue={title} />
             </FormGroup>
           </Col>
           <Col>
@@ -55,7 +58,7 @@ export default function NoteForm({
                   onAddTag(newTag);
                   setTags((prev) => [...prev, newTag]);
                 }}
-                value={tags.map((tag) => {
+                value={selectedTags.map((tag) => {
                   return { label: tag.label, value: tag.id };
                 })}
                 options={availableTags.map((tag) => {
@@ -76,8 +79,14 @@ export default function NoteForm({
         <Row>
           <Col>
             <FormGroup controlId="body">
-              <FormLabel>Title</FormLabel>
-              <FormControl ref={textRef} required as="textarea" rows={15} />
+              <FormLabel>Body</FormLabel>
+              <FormControl
+                ref={textRef}
+                required
+                as="textarea"
+                rows={15}
+                defaultValue={body}
+              />
             </FormGroup>
           </Col>
         </Row>

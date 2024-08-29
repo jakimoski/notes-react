@@ -14,6 +14,7 @@ export default function NewNote({
 }: NewNoteProps) {
   return (
     <div>
+      <h1>Create a note</h1>
       <NoteForm
         onSubmit={onSubmit}
         onAddTag={onAddTag}
